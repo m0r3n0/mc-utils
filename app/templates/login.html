@@ -3,36 +3,24 @@
 
 {% block content %}
 
-    <script type="text/javascript">
-        function set_openid(openid, pr) {
-
-            u = openid.search('<username>');     //search '<username>' tag in the openid string
-            if (u != -1) {                      //if found
-                // openid requires a username, request it
-                user = prompt('Enter your ' + pr + ' username:');
-                // replace '<username>' suffix with 'user' provided
-                openid = openid.substr(0, u) + user;
-            }
-            //retrieve form and pass the openid value to the openid form element
-            form = document.forms['login'];
-            form.elements['openid'].value = openid;
-        }
-    </script>
-
-    <h1>Sign in</h1>
-    <form action="" method="post" name="login">
-        {{ form.hidden_tag() }}
-        <p>
-            Please enter your openID:<br>
-            {{ form.openid(size=40) }}<br>
-            {% for error in form.openid.errors %}
-            <span style="color: red">[{{ error }}]</span>
-            {% endfor %}<br>
-            |{% for pr in providers %}
-                <a href="javascript: set_openid('{{ pr.url }}', '{{ pr.name }}');">{{ pr.name }}</a> |
-            {% endfor %}
-        </p>
-        <p>{{ form.remember_me }} Remember me</p>
-        <p><input type="submit" value="Sign in"></p>
-    </form>
+    <h1>{{ title }}</h1>
+    {% if user.is_authenticated %}
+        <p>You've already logged in as <strong>{{ user.nickname }}</strong>. | <a href="{{ url_for('logout') }}">Log out</a></p>
+    {% else %}
+        <p>Please select a method:</p>
+        <ul>
+            <form action="" method="post" name="root_login">
+            {{ root_form.hidden_tag() }}
+            <li>Login as root (password): {{ root_form.root_pwd }} | <input type="submit" value="Root it"></li>
+            </form>
+            <form action="" method="post" name="user_login">
+            {{ user_form.hidden_tag() }}
+            <li>User your own account: <br>
+                User: {{ user_form.username }} | Remember me: {{user_form.remember_me }}<br>
+                Password: {{ user_form.user_pwd }} | <input type="submit" value="Login"></li>
+            </form>
+            <li><a href="{{ url_for('new_user') }}">Create new account</a></li>
+            <li><a href="{{ url_for('oauth_authorize', provider='facebook') }}">Login as Facebook user</a></li>
+        </ul>
+    {% endif %}
 {% endblock %}

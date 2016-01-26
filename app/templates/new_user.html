@@ -1,0 +1,16 @@
+<!-- extent from base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>{{ title }}</h1>
+    <p>Please type your details:</p>
+    <form action="" method="post" name="root_login">
+            {{ form.hidden_tag() }}
+            Nickname: {{ form.nickname }}<br>
+            Password: {{ form.password }}<br>
+            Confirm password: {{ form.confirm_pwd }}<br>
+            Email: {{ form.email }}<br>
+            <input type="submit" value="Create User">
+            </form>
+{% endblock %}

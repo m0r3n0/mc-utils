@@ -2,7 +2,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hello, {{ user.nickname }}!</h1>
+    {% if user.is_authenticated %}
+        <h1>Hello, {{ user.nickname }}!</h1>
+    {% else %}
+        <h1>Hello, please <a href="{{ url_for('login') }}">log in!</a></h1>
+    {% endif %}
+    <hr>
     {% for post in posts %}
         <div><p>{{ post.author.nickname }} says: <b>{{ post.body }}</b></p></div>
     {% endfor %}

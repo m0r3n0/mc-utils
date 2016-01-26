@@ -18,3 +18,18 @@ OPENID_PROVIDERS = [
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+#OAuth
+FCBK = 'facebook'
+
+OAUTH_CREDENTIALS = {
+    FCBK: {'id': '925788830810075', 'secret': '3abd1341f0596dcfb75090f27346fb1b'},
+    'Twitter': {'id': '', 'secret': ''},
+    'Google': {'id': '', 'secret': ''}
+}
+
+ROOT = {
+    'name': 'root',
+    'pwd': 'eloy',
+    'email': 'moreno79@gmail.com'
+}
