@@ -1,0 +1,10 @@
+<!-- extent from base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Users</h1>
+    {% for user in users %}
+        <div><p><img src="{{ user.avatar(40) }}">
+            <a href="{{ url_for('user', nickname=user.nickname) }}">{{ user.nickname }}</a></p></div>
+    {% endfor %}
+{% endblock %}

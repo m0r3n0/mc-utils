@@ -105,6 +105,7 @@ def root_login(pwd):
             )
             db.session.add(user)
             db.session.commit()
+            autofollow(user)
         login_user(user, True)
     else:
         flash("Wrong password for " + app.config['ROOT']['name'])
@@ -125,8 +126,13 @@ def user_login(username, pwd, remember_me):
         )
         db.session.add(user)
         db.session.commit()
+        autofollow(user)
     login_user(user, remember_me)
 
+def autofollow(user):
+    user = user.follow(user)
+    db.session.add(user)
+    db.session.commit()
 
 ############################# Profile management
 # show user profile page
@@ -141,7 +147,9 @@ def user(nickname):
         {'author': user, 'body': 'Test post #1'},
         {'author': user, 'body': 'Test post #2'}
     ]
-    return render_template('user.html', user=user, posts=posts)
+    following = user.following()
+    followed_by = user.followed_by()
+    return render_template('user.html', user=user, posts=posts, followers=followed_by, following=following)
 
 
 @app.route('/edit', methods=['GET','POST'])
@@ -161,7 +169,7 @@ def edit():
     return render_template('edit.html', form=form)
 
 
-
+############################# Error management
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('404.html'), 404
@@ -170,4 +178,54 @@ def not_found_error(error):
 def internal_error(error):
     db.session.rollback()
     return render_template('500.html'), 500
+
+
+############################# User relations
+@app.route('/profiles')
+def profiles():
+    users = User.query.all()
+    return render_template('profiles.html', users=users)
+
+
+@app.route('/follow/<nickname>')
+def follow(nickname):
+    user = User.query.filter_by(nickname=nickname).first()
+    if user is None:
+        flash('User %s not found' % nickname)
+        return redirect(url_for('index'))
+    if user is g.user:
+        flash('You can\'t follow your self')
+        return redirect(url_for('user', nickname=nickname))
+    u = g.user.follow(user)
+    if u is None:
+        flash('Cannot follow ' + nickname + '.')
+        return redirect(url_for('user', nickname=nickname))
+    db.session.add(u)
+    db.session.commit()
+    flash('You are now following ' + nickname + '!')
+    return redirect(url_for('user', nickname=nickname))
+
+
+@app.route('/unfollow/<nickname>')
+def unfollow(nickname):
+    user = User.query.filter_by(nickname=nickname).first()
+    if user is None:
+        flash('User %s not found' % nickname)
+        return redirect(url_for('index'))
+    if user is g.user:
+        flash('You can\'t unfollow yourself')
+        return redirect(url_for('user', nickname=nickname))
+    u = g.user.unfollow(user)
+    if u is None:
+        flash('Cannot unfollow ' + nickname + '.')
+        return redirect(url_for('user', nickname=nickname))
+    db.session.add(u)
+    db.session.commit()
+    flash('You have stopped following ' + nickname + '!')
+    return redirect(url_for('user', nickname=nickname))
+
+
+
+
+
 
