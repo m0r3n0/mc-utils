@@ -1,9 +1,21 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, g, session
 from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
+from app.forms import EditProfileForm
 from .forms import RootLoginForm, UserLoginForm
 from .models import User
 from .oauth import OAuthSignIn
+from datetime import datetime
+
+
+@app.before_request
+def before_request():
+    g.user = current_user
+    if g.user.is_authenticated:
+        g.user.last_seen = datetime.utcnow()
+        db.session.add(g.user)
+        db.session.commit()
+
 
 # root & default path
 @app.route('/')
@@ -27,6 +39,10 @@ def index():
 ############################# Login management
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+
+    # check user is already logged in
+    if g.user is not None and g.user.is_authenticated:
+        return redirect(url_for('index'))
     # prepare root login form
     root_form = RootLoginForm()
     if root_form.validate_on_submit():     # root form submitted and validated
@@ -127,4 +143,31 @@ def user(nickname):
     ]
     return render_template('user.html', user=user, posts=posts)
 
+
+@app.route('/edit', methods=['GET','POST'])
+@login_required
+def edit():
+    form = EditProfileForm(g.user.nickname)
+    if form.validate_on_submit():
+        g.user.nickname = form.nickname.data
+        g.user.about_me = form.about_me.data
+        db.session.add(g.user)
+        db.session.commit()
+        flash('Your changes have been saved')
+        return redirect(url_for('user', nickname=g.user.nickname))
+    else:
+        form.nickname.data = g.user.nickname
+        form.about_me.data = g.user.about_me
+    return render_template('edit.html', form=form)
+
+
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    return render_template('500.html'), 500
 

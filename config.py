@@ -33,3 +33,10 @@ ROOT = {
     'pwd': 'eloy',
     'email': 'moreno79@gmail.com'
 }
+
+
+# LOGGING
+MAIL = {'SERVER': 'localhost', 'PORT': 25, 'USERNAME': None, 'PASSWORD': None}
+ADMINS = ['moreno79@gmail.com']
+
+

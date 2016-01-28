@@ -9,6 +9,8 @@ class User(UserMixin, db.Model):
     nickname = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    about_me = db.Column(db.String(140))
+    last_seen = db.Column(db.DateTime)
 
     # printing user for debugging purposes
     def __repr__(self):
@@ -28,6 +30,13 @@ class Post(db.Model):
     def __repr__(self):
         return '<Post %r>' % (self.body)
 
+
+class fordward(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(40), unique=True)
+
+    def __repr__(self):
+        return '<forward: %r>' % (self.name)
 
 # login section
 lm = LoginManager(app)
