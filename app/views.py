@@ -2,8 +2,8 @@ from flask import render_template, flash, redirect, url_for, g, session
 from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
 from app.forms import EditProfileForm
-from .forms import RootLoginForm, UserLoginForm
-from .models import User
+from .forms import RootLoginForm, UserLoginForm, PostForm
+from .models import User, Post
 from .oauth import OAuthSignIn
 from datetime import datetime
 
@@ -18,22 +18,25 @@ def before_request():
 
 
 # root & default path
-@app.route('/')
-@app.route('/index')
-def index():
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
+@app.route('/index/<int:page>', methods=['GET', 'POST'])
+def index(page=1):
+
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data, timestamp=datetime.utcnow(), author=g.user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post is now live!')
+        return redirect(url_for('index'))
 
     # fake contents to test the view
-    posts = [
-        {
-            'author': {'nickname': 'John'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'nickname': 'Susan'},
-            'body': 'The Avengers movie was cool'
-        }
-    ]
-    return render_template('index.html', title='Home', user=current_user, posts=posts)
+    posts = []
+    if g.user is not None and g.user.is_authenticated:
+        #posts = g.user.followed_posts().all()
+        posts = g.user.followed_posts().paginate(page, app.config['POSTS_PER_PAGE'], False)
+    return render_template('index.html', title='Home', user=current_user, posts=posts, form=form)
 
 
 ############################# Login management
@@ -79,11 +82,13 @@ def oauth_callback(provider):
         user = User(social_id=social_id, nickname=username, email=email)
         db.session.add(user)
         db.session.commit()
-    login_user(user, True)
+    login_user(user)
+    #login_user(user, True)     # remember user
     return redirect(url_for('index'))
 
 # logout
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
@@ -120,9 +125,9 @@ def user_login(username, pwd, remember_me):
     user = User.query.filter_by(nickname=username).first()
     if not user:
         user = User(
-            social_id='internal$' + username,
+            social_id=app.config['INTERNAL'] + username,
             nickname=username,
-            email=username + '@nodomain.com'
+            email=username + app.config['DEFAULT_EMAIL']
         )
         db.session.add(user)
         db.session.commit()
@@ -137,16 +142,14 @@ def autofollow(user):
 ############################# Profile management
 # show user profile page
 @app.route('/user/<nickname>')
+@app.route('/user/<nickname>/<int:page>')
 @login_required
-def user(nickname):
+def user(nickname, page=1):
     user = User.query.filter_by(nickname=nickname).first()
     if user == None:
         flash('User %s not found' % nickname)
         return(redirect('index'))
-    posts = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
-    ]
+    posts = g.user.followed_posts().paginate(page, app.config['POSTS_PER_PAGE'], False)
     following = user.following()
     followed_by = user.followed_by()
     return render_template('user.html', user=user, posts=posts, followers=followed_by, following=following)
@@ -159,6 +162,7 @@ def edit():
     if form.validate_on_submit():
         g.user.nickname = form.nickname.data
         g.user.about_me = form.about_me.data
+        g.user.email = form.email.data
         db.session.add(g.user)
         db.session.commit()
         flash('Your changes have been saved')
@@ -166,6 +170,7 @@ def edit():
     else:
         form.nickname.data = g.user.nickname
         form.about_me.data = g.user.about_me
+        form.email.data = g.user.email
     return render_template('edit.html', form=form)
 
 
@@ -188,6 +193,7 @@ def profiles():
 
 
 @app.route('/follow/<nickname>')
+@login_required
 def follow(nickname):
     user = User.query.filter_by(nickname=nickname).first()
     if user is None:
@@ -207,6 +213,7 @@ def follow(nickname):
 
 
 @app.route('/unfollow/<nickname>')
+@login_required
 def unfollow(nickname):
     user = User.query.filter_by(nickname=nickname).first()
     if user is None:

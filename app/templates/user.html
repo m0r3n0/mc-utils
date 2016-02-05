@@ -6,6 +6,7 @@
         <tr valign="top">
             <td><img src="{{ user.avatar(128) }}"></td>
             <td><h1>User: {{ user.nickname }}</h1>
+                <p>Email: <a href="mailto: {{ user.email }}">{{ user.email }}</a></p>
                 {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
                 {% if user.last_seen %}<p><i>{{ user.last_seen }}</i></p>{% endif %}
                 {% if user.id == g.user.id %}
@@ -34,7 +35,11 @@
         {% endif %}
     {% endfor %}
     <hr>
-    {% for post in posts %}
+    {% for post in posts.items %}
         {% include 'post.html' %}
     {% endfor %}
+    {% if posts.has_prev %}<a href="{{ url_for('user', nickname=user.nickname, page=posts.prev_num) }}">&lt;&lt; Newer</a>
+    {% else %}&lt;&lt; Newer{% endif %} |
+    {% if posts.has_next %}<a href="{{ url_for('user', nickname=user.nickname, page=posts.next_num) }}">Older &gt;&gt;</a>
+    {% else %}Older &gt;&gt;{% endif %}
 {% endblock %}

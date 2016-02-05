@@ -72,8 +72,6 @@ class Post(db.Model):
         return '<Post %r>' % (self.body)
 
 
-
-
 class fordward(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), unique=True)

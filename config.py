@@ -34,9 +34,14 @@ ROOT = {
     'email': 'moreno79@gmail.com'
 }
 
+INTERNAL = 'internal$'
+DEFAULT_EMAIL = '@nodomain.com'
+
 
 # LOGGING
 MAIL = {'SERVER': 'localhost', 'PORT': 25, 'USERNAME': None, 'PASSWORD': None}
 ADMINS = ['moreno79@gmail.com']
 
 
+# PAGINATION
+POSTS_PER_PAGE = 3

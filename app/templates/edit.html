@@ -4,7 +4,7 @@
 {% block content %}
   <h1>Edit Your Profile</h1>
   <form action="" method="post" name="edit">
-      {{form.hidden_tag()}}
+      {{ form.hidden_tag() }}
       <table>
           <tr>
               <td>Your nickname:</td>
@@ -13,6 +13,10 @@
                   <br><span style="color: red;">[{{ error }}]</span>
                   {% endfor %}
               </td>
+          </tr>
+          <tr>
+              <td>Your email:</td>
+              <td>{{ form.email(size=50) }}</td>
           </tr>
           <tr>
               <td>About yourself:</td>
