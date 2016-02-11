@@ -1,10 +1,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from config import MAIL, ADMINS
+from config import LOCAL_SMTP, ADMINS
+from flask.ext.mail import Mail
 
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
+mail = Mail(app)
 
 from app import models, views
 
@@ -13,9 +15,9 @@ if not app.debug:
     import logging
     from logging.handlers import SMTPHandler
     credentials = None
-    if MAIL['USERNAME'] or MAIL['PASSWORD']:
-        credentials = (MAIL['USERNAME'], MAIL['PASSWORD'])
-    mail_handler = SMTPHandler((MAIL['SERVER'], MAIL['PORT']), 'no-reply@' + MAIL['SERVER'],
+    if LOCAL_SMTP['USERNAME'] or LOCAL_SMTP['PASSWORD']:
+        credentials = (LOCAL_SMTP['USERNAME'], LOCAL_SMTP['PASSWORD'])
+    mail_handler = SMTPHandler((LOCAL_SMTP['SERVER'], LOCAL_SMTP['PORT']), 'no-reply@' + LOCAL_SMTP['SERVER'],
                                ADMINS, 'microblog crash', credentials)
     mail_handler.setLevel(logging.ERROR)
     app.logger.addHandler(mail_handler)

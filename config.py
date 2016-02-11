@@ -39,8 +39,23 @@ DEFAULT_EMAIL = '@nodomain.com'
 
 
 # LOGGING
-MAIL = {'SERVER': 'localhost', 'PORT': 25, 'USERNAME': None, 'PASSWORD': None}
+LOCAL_SMTP = {'SERVER': 'localhost', 'PORT': 25, 'USERNAME': None, 'PASSWORD': None}
+GMAIL_SMTP = {'SERVER': 'smtp.gmail.com', 'PORT': 465, 'USE_TLS':False, 'USE_SSL': True,
+              'USERNAME': os.environ.get('GMAIL_USER'),'PASSWORD': os.environ.get('GMAIL_PWD')}
 ADMINS = ['moreno79@gmail.com']
+local_smtp = True
+if local_smtp:
+    MAIL_SERVER = 'localhost'
+    MAIL_PORT = 25
+    MAIL_USERNAME = None
+    MAIL_PASSWORD = None
+else:
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 465
+    USE_TLS = False
+    USE_SSL = True
+    MAIL_USERNAME = os.environ.get('GMAIL_USER')
+    MAIL_PASSWORD = os.environ.get('GMAIL_PWD')
 
 
 # PAGINATION

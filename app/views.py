@@ -1,6 +1,7 @@
 from flask import render_template, flash, redirect, url_for, g, session
 from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
+from app.emails import follower_notification
 from app.forms import EditProfileForm
 from .forms import RootLoginForm, UserLoginForm, PostForm
 from .models import User, Post
@@ -208,6 +209,7 @@ def follow(nickname):
         return redirect(url_for('user', nickname=nickname))
     db.session.add(u)
     db.session.commit()
+    follower_notification(user, g.user)
     flash('You are now following ' + nickname + '!')
     return redirect(url_for('user', nickname=nickname))
 

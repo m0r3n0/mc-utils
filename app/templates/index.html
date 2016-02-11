@@ -4,35 +4,42 @@
 {% block content %}
     {% if user.is_authenticated %}
         <h1>Hello, {{ user.nickname }}!</h1>
-        <hr>
-          <form action="" method="post" name="post">
-          {{ form.hidden_tag() }}
-          <table>
-              <tr>
-                  <td>Say something:</td>
-                  <td>{{ form.post(size=30, maxlength=140) }}</td>
-                  <td>
-                  {% for error in form.post.errors %}
-                  <span style="color: red;">[{{ error }}]</span><br>
-                  {% endfor %}
-                  </td>
-              </tr>
-              <tr>
-                  <td></td>
-                  <td><input type="submit" value="Post!"></td>
-                  <td></td>
-              </tr>
-          </table>
-          </form>
-        <hr>
-        {% for post in posts.items %}
-            {% include 'post.html' %}
+<div class="well">
+<form class="form-inline" role="form" action="" method="post" name="post">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        <label for="post">Say something</label>
+        {{ form.post(size=30, maxlength=200) }}
+    </div>
+    <button type="submit" class="btn btn-default">Post!</button>
+    <div>
+        {% for error in form.post.errors %}
+        <span style="color: red;">[{{ error }}]</span><br>
         {% endfor %}
-        {% if posts.has_prev %}<a href="{{ url_for('index', page=posts.prev_num) }}">&lt;&lt; Newer</a>
-        {% else %}&lt;&lt; Newer{% endif %} |
-        {% if posts.has_next %}<a href="{{ url_for('index', page=posts.next_num) }}">Older &gt;&gt;</a>
-        {% else %}Older &gt;&gt;{% endif %}
-    {% else %}
-        <h1>Hello, please <a href="{{ url_for('login') }}">log in!</a></h1>
-    {% endif %}
+    </div>
+</form>
+</div>
+<hr>
+    {% for post in posts.items %}
+        {% include 'post.html' %}
+    {% endfor %}
+    <nav>
+      <ul class="pagination">
+        {% if posts.has_prev %}
+          <li>
+          <a href="{{ url_for('index', page=posts.prev_num) }}" aria-label="Previous">
+          <span aria-hidden="true">&laquo; Previous</span></a>
+          </li>
+        {% endif %}
+        {% if posts.has_next %}
+          <li>
+          <a href="{{ url_for('index', page=posts.next_num) }}" aria-label="Next">
+          <span aria-hidden="true">Next &raquo;</span></a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+{% else %}
+    <h1>Hello, please <a href="{{ url_for('login') }}">log in!</a></h1>
+{% endif %}
 {% endblock %}

@@ -8,19 +8,40 @@
         <p>You've already logged in as <strong>{{ user.nickname }}</strong>. | <a href="{{ url_for('logout') }}">Log out</a></p>
     {% else %}
         <p>Please select a method:</p>
-        <ul>
-            <form action="" method="post" name="root_login">
-            {{ root_form.hidden_tag() }}
-            <li>Login as root (password): {{ root_form.root_pwd }} | <input type="submit" value="Root it"></li>
-            </form>
-            <form action="" method="post" name="user_login">
-            {{ user_form.hidden_tag() }}
-            <li>User your own account: <br>
-                User: {{ user_form.username }} | Remember me: {{user_form.remember_me }}<br>
-                Password: {{ user_form.user_pwd }} | <input type="submit" value="Login"></li>
-            </form>
-            <li><a href="{{ url_for('new_user') }}">Create new account</a></li>
-            <li><a href="{{ url_for('oauth_authorize', provider='facebook') }}">Login as Facebook user</a></li>
-        </ul>
+    <div class="well">
+    <form class="form-inline" role="form" action="" method="post" name="root-login">
+        {{ root_form.hidden_tag() }}
+        <div class="form-group">
+            <label for="root_pwd">Login as root (password required)</label>
+            {{ root_form.root_pwd }}
+        </div>
+        <button type="submit" class="btn btn-default">Root it!</button>
+    </form>
+    </div>
+    <div class="well">
+    <form class="form-inline" role="form" action="" method="post" name="user-login">
+        {{ user_form.hidden_tag() }}
+        <div class="form-group">
+            <label for="username">Username</label>
+            {{ user_form.username }}
+        </div>
+        <div class="form-group">
+            <label for="user_pwd">Password</label>
+            {{ user_form.user_pwd }}
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>{{user_form.remember_me }} Remember me</label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-default">Login</button>
+    </form>
+    </div>
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-default">
+        <a href="{{ url_for('new_user') }}">Create new account</a></button>
+        <button type="button" class="btn btn-default">
+        <a href="{{ url_for('oauth_authorize', provider='facebook') }}">Login as Facebook user</a></button>
+    </div>
     {% endif %}
 {% endblock %}

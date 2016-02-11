@@ -2,44 +2,99 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <table>
-        <tr valign="top">
-            <td><img src="{{ user.avatar(128) }}"></td>
-            <td><h1>User: {{ user.nickname }}</h1>
-                <p>Email: <a href="mailto: {{ user.email }}">{{ user.email }}</a></p>
-                {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-                {% if user.last_seen %}<p><i>{{ user.last_seen }}</i></p>{% endif %}
-                {% if user.id == g.user.id %}
-                    <p><a href="{{ url_for('edit') }}">Edit Profile</a></p>
-                {% elif not g.user.is_following(user) %}
-                    <p><a href="{{ url_for('follow', nickname=user.nickname) }}">Follow</a></p>
-                {% else %}
-                    <p><a href="{{ url_for('unfollow', nickname=user.nickname) }}">Unfollow</a></p>
-                {% endif %}
-            </td>
-        </tr>
-    </table>
-    <hr>
-    <h1>Following...</h1>
-    {% for u in following %}
-        {% if u.id != user.id %}
-        <div><p><img src="{{ u.avatar(40) }}">
-            <a href="{{ url_for('user', nickname=u.nickname) }}">{{ u.nickname }}</a></p></div>
-        {% endif %}
-    {% endfor %}
-    <h1>Followed by...</h1>
-    {% for u in followers %}
-        {% if u.id != user.id %}
-        <div><p><img src="{{ u.avatar(40) }}">
-            <a href="{{ url_for('user', nickname=u.nickname) }}">{{ u.nickname }}</a></p></div>
-        {% endif %}
-    {% endfor %}
-    <hr>
-    {% for post in posts.items %}
-        {% include 'post.html' %}
-    {% endfor %}
-    {% if posts.has_prev %}<a href="{{ url_for('user', nickname=user.nickname, page=posts.prev_num) }}">&lt;&lt; Newer</a>
-    {% else %}&lt;&lt; Newer{% endif %} |
-    {% if posts.has_next %}<a href="{{ url_for('user', nickname=user.nickname, page=posts.next_num) }}">Older &gt;&gt;</a>
-    {% else %}Older &gt;&gt;{% endif %}
+
+<div class="media">
+  <div class="media-left">
+      <img class="media-object" src="{{ user.avatar(100) }}" alt="{{ user.nickname }}">
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">User: {{ user.nickname }}</h4>
+        <p>Email: <a href="mailto: {{ user.email }}">{{ user.email }}</a></p>
+        {% if user.about_me %}<p>About me: <b>{{ user.about_me }}</b></p>{% endif %}
+        {% if user.last_seen %}<p><small><i>Last access: {{ user.last_seen }}</i></small></p>{% endif %}
+  </div>
+</div>
+<div class="btn-group" role="group">
+    {% if user.id == g.user.id %}
+        <button type="button" class="btn btn-default">
+        <a href="{{ url_for('edit') }}">Edit Profile</a></button>
+    {% elif not g.user.is_following(user) %}
+        <button type="button" class="btn btn-default">
+        <a href="{{ url_for('follow', nickname=user.nickname) }}">Follow</a></button>
+    {% else %}
+        <button type="button" class="btn btn-default">
+        <a href="{{ url_for('unfollow', nickname=user.nickname) }}">Unfollow</a></button>
+    {% endif %}
+</div>
+<hr>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <p>Following...</p>
+                </div>
+                <div class="panel-body">
+                    {% if following.count() > 1 %}
+                        {% for u in following %}
+                            {% if u.id != user.id %}
+                            <div><p><img src="{{ u.avatar(40) }}" class="img-thumbnail">
+                                <a href="{{ url_for('user', nickname=u.nickname) }}">{{ u.nickname }}</a></p></div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <p>Nobody yet...
+                            {% if user.id == g.user.id %}
+                            <a href="{{ url_for('profiles') }}">Search users</a></p>
+                            {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                <p>Followed by...</p>
+                </div>
+                <div class="panel-body">
+                {% for u in followers %}
+                    {% if u.id != user.id %}
+                    <div><p><img src="{{ u.avatar(40) }}" class="img-thumbnail">
+                        <a href="{{ url_for('user', nickname=u.nickname) }}">{{ u.nickname }}</a></p></div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                <p>Timeline</p>
+                </div>
+                <div class="panel-body">
+                    {% for post in posts.items %}
+                        {% include 'post.html' %}
+                    {% endfor %}
+                    <nav>
+                      <ul class="pagination">
+                        {% if posts.has_prev %}
+                          <li>
+                          <a href="{{ url_for('user', nickname=user.nickname, page=posts.prev_num) }}" aria-label="Previous">
+                          <span aria-hidden="true">&laquo; Previous</span></a>
+                          </li>
+                        {% endif %}
+                        {% if posts.has_next %}
+                          <li>
+                          <a href="{{ url_for('user', nickname=user.nickname, page=posts.next_num) }}" aria-label="Next">
+                          <span aria-hidden="true">Next &raquo;</span></a>
+                          </li>
+                        {% endif %}
+                      </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
 {% endblock %}

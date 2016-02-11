@@ -1,6 +1,24 @@
-<table>
-    <tr valign="top">
-    <td><img src="{{ post.author.avatar(50) }}"></td><td><i>{{ post.author.nickname }} says:</i><br>
-    {{ post.body }}</td>
-    </tr>
-</table>
+<!--<table class="table table-striped">
+    <tbody><tr>
+        <td><img src="{{ post.author.avatar(50) }}" class="img-thumbnail" alt="{{ post.author.nickname }}"></td>
+        <td><i>{{ post.author.nickname }} says:</i></td>
+        <td>{{ post.body }}</td>
+    </tr></tbody>
+</table>-->
+
+
+<div class="media">
+  <div class="media-left">
+    <a href="{{ url_for('user', nickname=post.author.nickname) }}">
+      <img class="media-object" src="{{ post.author.avatar(70) }}" alt="{{ post.author.nickname }}">
+    </a>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">{{ post.author.nickname }} says:</h4>
+    <blockquote>{{ post.body }}</blockquote>
+  </div>
+</div>
+<!--
+    <p><img src="{{ post.author.avatar(40) }}" class="img-thumbnail" alt="{{ post.author.nickname }}">
+    <i>{{ post.author.nickname }} says:</i><b> {{ post.body }}</b></p>
+    -->
