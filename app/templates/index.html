@@ -3,15 +3,15 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        <h1>Hello, {{ user.nickname }}!</h1>
+        <h1>{{ _('Hello,') }} {{ user.nickname }}!</h1>
 <div class="well">
 <form class="form-inline" role="form" action="" method="post" name="post">
     {{ form.hidden_tag() }}
     <div class="form-group">
-        <label for="post">Say something</label>
+        <label for="post">{{ _('Say something') }}</label>
         {{ form.post(size=30, maxlength=200) }}
     </div>
-    <button type="submit" class="btn btn-default">Post!</button>
+    <button type="submit" class="btn btn-default">{{ _('Post!') }}</button>
     <div>
         {% for error in form.post.errors %}
         <span style="color: red;">[{{ error }}]</span><br>
@@ -28,18 +28,18 @@
         {% if posts.has_prev %}
           <li>
           <a href="{{ url_for('index', page=posts.prev_num) }}" aria-label="Previous">
-          <span aria-hidden="true">&laquo; Previous</span></a>
+          <span aria-hidden="true">&laquo; {{ _('Previous') }}</span></a>
           </li>
         {% endif %}
         {% if posts.has_next %}
           <li>
           <a href="{{ url_for('index', page=posts.next_num) }}" aria-label="Next">
-          <span aria-hidden="true">Next &raquo;</span></a>
+          <span aria-hidden="true">{{ _('Next') }} &raquo;</span></a>
           </li>
         {% endif %}
       </ul>
     </nav>
 {% else %}
-    <h1>Hello, please <a href="{{ url_for('login') }}">log in!</a></h1>
+    <h1>{{ _('Hello, please') }} <a href="{{ url_for('login') }}">{{ _('log in!') }}</a></h1>
 {% endif %}
 {% endblock %}

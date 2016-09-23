@@ -2,11 +2,15 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import LOCAL_SMTP, ADMINS
 from flask.ext.mail import Mail
+from .momentjs import momentjs
+from flask_babel import Babel
 
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 mail = Mail(app)
+app.jinja_env.globals['momentjs']=momentjs
+babel = Babel(app)
 
 from app import models, views
 

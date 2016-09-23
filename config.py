@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -60,3 +61,10 @@ else:
 
 # PAGINATION
 POSTS_PER_PAGE = 3
+
+
+# I18N
+LANGUAGES = {
+    'en': 'English',
+    'es': 'Español'
+}

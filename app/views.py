@@ -1,12 +1,13 @@
-from flask import render_template, flash, redirect, url_for, g, session
+from flask import render_template, flash, redirect, url_for, g, session, request
 from flask_login import current_user, login_user, logout_user, login_required
-from app import app, db
+from app import app, db, babel
 from app.emails import follower_notification
 from app.forms import EditProfileForm
 from .forms import RootLoginForm, UserLoginForm, PostForm
 from .models import User, Post
 from .oauth import OAuthSignIn
 from datetime import datetime
+from config import LANGUAGES
 
 
 @app.before_request
@@ -16,7 +17,8 @@ def before_request():
         g.user.last_seen = datetime.utcnow()
         db.session.add(g.user)
         db.session.commit()
-
+    g.locale = get_locale()
+    g.langs = LANGUAGES
 
 # root & default path
 @app.route('/', methods=['GET', 'POST'])
@@ -234,7 +236,16 @@ def unfollow(nickname):
     return redirect(url_for('user', nickname=nickname))
 
 
+@babel.localeselector
+def get_locale():
+    # BUG: al invocarse justo before_request siempre se selecciona el preferido, no el seleccionado
+    l = getattr(g, 'locale', None)
+    if l is not None:
+        return g.locale
+    return request.accept_languages.best_match(LANGUAGES.keys())
 
 
-
-
+@app.route('/locale/<locale>')
+def change_locale(locale):
+    g.locale = locale
+    return redirect(url_for('index'))
