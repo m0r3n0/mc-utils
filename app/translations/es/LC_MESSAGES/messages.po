@@ -1,0 +1,212 @@
+# Spanish translations for PROJECT.
+# Copyright (C) 2016 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2016-02-16 13:15+0100\n"
+"PO-Revision-Date: 2016-02-16 13:16+0100\n"
+"Last-Translator: \n"
+"Language: es\n"
+"Language-Team: es <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.2.0\n"
+
+#: app/templates/404.html:5
+msgid "File Not Found"
+msgstr "Fichero no encontrado"
+
+#: app/templates/404.html:6 app/templates/500.html:7
+msgid "Back to index"
+msgstr "Volver al inicio"
+
+#: app/templates/500.html:5
+msgid "An unexpected error has occurred"
+msgstr "Un error inesperado ha ocurrido"
+
+#: app/templates/500.html:6
+msgid "The administrator has been notified. Sorry for the inconvenience!"
+msgstr "El administrador ha sido informado. Disculpe las molestias!"
+
+#: app/templates/base.html:31
+msgid "Home"
+msgstr "Inicio"
+
+#: app/templates/base.html:32 app/templates/profiles.html:5
+#: app/templates/profiles.html:6
+msgid "Users"
+msgstr "Usuarios"
+
+#: app/templates/base.html:36
+msgid "My account"
+msgstr "Mi cuenta"
+
+#: app/templates/base.html:40
+msgid "Logout"
+msgstr "Salir"
+
+#: app/templates/base.html:44 app/templates/login.html:37
+msgid "Login"
+msgstr "Entrar"
+
+#: app/templates/edit.html:5
+msgid "Edit Your Profile"
+msgstr "Modificar perfÃ­l"
+
+#: app/templates/edit.html:10
+msgid "Your nickname"
+msgstr "Nombre"
+
+#: app/templates/edit.html:18
+msgid "Your email"
+msgstr "Email"
+
+#: app/templates/edit.html:22
+msgid "About yourself"
+msgstr "Sobre ti"
+
+#: app/templates/follower_email.html:1
+msgid "Dear"
+msgstr "Estimado"
+
+#: app/templates/follower_email.html:2
+msgid "is now a follower"
+msgstr "te sigue"
+
+#: app/templates/follower_email.html:12
+msgid "Regards"
+msgstr "Saludos"
+
+#: app/templates/follower_email.html:13
+msgid "The <code>microblog</code> admin"
+msgstr "El administrador de <code>microblog</code>"
+
+#: app/templates/index.html:6
+msgid "Hello,"
+msgstr "Hola "
+
+#: app/templates/index.html:11
+msgid "Say something"
+msgstr "Cuenta algo"
+
+#: app/templates/index.html:14
+msgid "Post!"
+msgstr "Publica!"
+
+#: app/templates/index.html:31 app/templates/user.html:83
+msgid "Previous"
+msgstr "Anteriores"
+
+#: app/templates/index.html:37 app/templates/user.html:89
+msgid "Next"
+msgstr "Siguientes"
+
+#: app/templates/index.html:43
+msgid "Hello, please"
+msgstr "Hola, por favor"
+
+#: app/templates/index.html:43
+msgid "log in!"
+msgstr "acceda"
+
+#: app/templates/login.html:8
+msgid "You've already logged in as"
+msgstr "Ya estÃ¡ conectado como"
+
+#: app/templates/login.html:8
+msgid "Log out"
+msgstr "Salir"
+
+#: app/templates/login.html:10
+msgid "Please select a login method:"
+msgstr "Por favor, elija modo de acceso:"
+
+#: app/templates/login.html:15
+msgid "Login as root (password required)"
+msgstr "Acceder como administrador (password)"
+
+#: app/templates/login.html:18
+msgid "Root it!"
+msgstr "Admin!"
+
+#: app/templates/login.html:25
+msgid "Username"
+msgstr "Usuario"
+
+#: app/templates/login.html:29
+msgid "Password"
+msgstr "ContraseÃ±a"
+
+#: app/templates/login.html:34
+msgid "Remember me"
+msgstr "Recordarme"
+
+#: app/templates/login.html:42
+msgid "Create new account"
+msgstr "Crear nueva cuenta"
+
+#: app/templates/login.html:44
+msgid "Login as Facebook user"
+msgstr "Acceder como usuario de Facebook"
+
+#: app/templates/post.html:8
+msgid "said"
+msgstr "dijo"
+
+#: app/templates/user.html:11
+msgid "User:"
+msgstr "Usuario:"
+
+#: app/templates/user.html:12
+msgid "Email:"
+msgstr "Email:"
+
+#: app/templates/user.html:13
+msgid "About me:"
+msgstr "Sobre mi:"
+
+#: app/templates/user.html:14
+msgid "Last seen:"
+msgstr "Ãšltimo acceso:"
+
+#: app/templates/user.html:20
+msgid "Edit Profile"
+msgstr "Modificar perfÃ­l"
+
+#: app/templates/user.html:23
+msgid "Follow"
+msgstr "Seguir"
+
+#: app/templates/user.html:26
+msgid "Unfollow"
+msgstr "Dejar de seguir"
+
+#: app/templates/user.html:35
+msgid "Following..."
+msgstr "Siguiendo..."
+
+#: app/templates/user.html:46
+msgid "Nobody yet..."
+msgstr "Nadie aÃºn..."
+
+#: app/templates/user.html:48
+msgid "Search users"
+msgstr "Buscar usuarios"
+
+#: app/templates/user.html:57
+msgid "Followed by..."
+msgstr "Seguido por..."
+
+#: app/templates/user.html:72
+msgid "Timeline"
+msgstr "EstÃ¡ pasando"
+
+#~ msgid "Hello, please $(start_link)s"
+#~ msgstr "Hola, por favor $(login)s"
+
