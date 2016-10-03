@@ -1,0 +1,72 @@
+<!-- extent from base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">{{ _('New WSDL') }}</div>
+        <div class="panel-body">
+            <form class="form-horizontal" action="" method="post" name="new_wsdl">
+                {{ new_wsdl_form.hidden_tag() }}
+                <div class="form-group">
+                    <div class="row">
+                        <label class="control-label col-sm-1" for="name">{{ _('WSDL Name') }}:</label>
+                        <div class="col-sm-8">
+                        {{ new_wsdl_form.name(size=40,class_="form-control") }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="control-label col-sm-1" for="url">{{ _('WSDL URL') }}:</label>
+                        <div class="col-sm-8">
+                        {{ new_wsdl_form.url(size=120,class_="form-control") }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-offset-1 col-sm-8">
+                        <button type="submit" class="btn btn-default" value="Save">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">{{ _('Retrieve') }}</div>
+        <div class="panel-body">
+            <form class="form-horizontal" action="" method="post" name="get_wsdl">
+                {{ get_wsdl_form.hidden_tag() }}
+                    <div class="form-group">
+                        <label class="control-label col-sm-1" for="wsdl">{{ _('Select WSDL') }}:</label>
+                        <div class="col-sm-8">
+                            {{ get_wsdl_form.id(class_="form-control") }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-8">
+                            <div class="checkbox">
+                              <label>{{ get_wsdl_form.use_proxy }} {{ _('Use proxy') }}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-1 col-sm-8">
+                            <button type="submit" class="btn btn-default" value="Connect">Connect</button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+{% for error in new_wsdl_form.errors %}
+<br><span style="color: red;">[{{ error }}]</span>
+{% endfor %}
+---
+{% for error in get_wsdl_form.errors %}
+<br><span style="color: red;">[{{ error }}]</span>
+{% endfor %}
+
+
+{% endblock %}
+
+

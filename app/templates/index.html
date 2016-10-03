@@ -2,44 +2,48 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        <h1>{{ _('Hello,') }} {{ user.nickname }}!</h1>
-<div class="well">
-<form class="form-inline" role="form" action="" method="post" name="post">
-    {{ form.hidden_tag() }}
-    <div class="form-group">
-        <label for="post">{{ _('Say something') }}</label>
-        {{ form.post(size=30, maxlength=200) }}
+    <h1>{{ _('Select a utility:') }}</h1>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a href="{{ url_for('soap_index') }}">{{ _('SOAP') }}</a>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="{{ url_for('soap_wsdl') }}">{{ _('Explore WSDL') }}</a></li>
+                        <li class="list-group-item">Más opciones aquí...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Otro grupo de utilidades
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">...</li>
+                        <li class="list-group-item">...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Otro grupo de utilidades
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">...</li>
+                        <li class="list-group-item">...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-    <button type="submit" class="btn btn-default">{{ _('Post!') }}</button>
-    <div>
-        {% for error in form.post.errors %}
-        <span style="color: red;">[{{ error }}]</span><br>
-        {% endfor %}
-    </div>
-</form>
-</div>
-<hr>
-    {% for post in posts.items %}
-        {% include 'post.html' %}
-    {% endfor %}
-    <nav>
-      <ul class="pagination">
-        {% if posts.has_prev %}
-          <li>
-          <a href="{{ url_for('index', page=posts.prev_num) }}" aria-label="Previous">
-          <span aria-hidden="true">&laquo; {{ _('Previous') }}</span></a>
-          </li>
-        {% endif %}
-        {% if posts.has_next %}
-          <li>
-          <a href="{{ url_for('index', page=posts.next_num) }}" aria-label="Next">
-          <span aria-hidden="true">{{ _('Next') }} &raquo;</span></a>
-          </li>
-        {% endif %}
-      </ul>
-    </nav>
-{% else %}
-    <h1>{{ _('Hello, please') }} <a href="{{ url_for('login') }}">{{ _('log in!') }}</a></h1>
-{% endif %}
 {% endblock %}
+
+

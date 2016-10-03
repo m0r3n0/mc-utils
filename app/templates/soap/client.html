@@ -1,0 +1,24 @@
+<!-- extent from base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+    <a href="{{ url_for('soap_wsdl_sum') }}">{{ _('WSDL Summary') }}</a>
+    <h1>{{ _('Services:') }}</h1>
+
+    {% for m in methods %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ _('Service:') }} <strong>{{ m.service }}</strong> + {{ _('Port:') }} <strong>{{ m.port }}</strong>
+            </div>
+            <div class="panel-body">
+                {% for i in m.methods %}
+                    <a href="{{ url_for('soap_method',method=i) }}">{{ i }}</a><br>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+
+
+{% endblock %}
+
+

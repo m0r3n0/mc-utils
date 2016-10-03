@@ -1,0 +1,11 @@
+<!-- extent from base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ _('Select an option:') }}</h1>
+    <ul class="list-group">
+        <li class="list-group-item"><a href="{{ url_for('soap_wsdl') }}">{{ _('Explore WSDL') }}</a></li>
+    </ul>
+{% endblock %}
+
+

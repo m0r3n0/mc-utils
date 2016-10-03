@@ -11,9 +11,9 @@
     </script>
     <meta charset="UTF-8">
     {% if title %}
-        <title>{{ title }} - microblog</title>
+        <title>mc-utils: {{ title }}</title>
     {% else %}
-        <title>microblog</title>
+        <title>mc-utils</title>
     {% endif %}
 </head>
 <body>
@@ -21,64 +21,52 @@
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
+          <a class="navbar-brand" href="/">mc-utils</a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">microblog</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
               <li><a href="{{ url_for('index') }}">{{ _('Home') }}</a></li>
-              <li><a href="{{ url_for('profiles') }}">{{ _('Users') }}</a></li>
-              {% if g.user.is_authenticated %}
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    {{ _('My account') }}<span class="caret"></span></a>
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('soap_index') }}">{{ _('SOAP') }}
+                  <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="{{ url_for('user', nickname=g.user.nickname) }}">{{ g.user.nickname }}</a></li>
-                    <li role="separator" class="divider"></li>
-                    {% for lang in g.langs %}
-                        {% if lang != g.locale %}
-                        <li><a href="{{ url_for('change_locale', locale=lang) }}">{{ g.langs[lang] }}</a></li>
-                        {% endif %}
-                    {% endfor %}
-                    <li role="separator" class="divider"></li>
-                    <li><a href="{{ url_for('logout') }}">{{ _('Logout') }}</a></li>
+                    <li><a href="{{ url_for('soap_wsdl') }}">{{ _('Explore WSDL') }}</a></li>
+                    <li><a href="#">Put new options here</a></li>
                 </ul>
               </li>
-              {% else %}
-              <li><a href="{{ url_for('login') }}">{{ _('Login') }}</a></li>
-              {% endif %}
-            </ul>
+              <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="{{ url_for('soap_index') }}">Others
+                  <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Others 1</a></li>
+                    <li><a href="#">Others 2</a></li>
+                    <li><a href="#">Others 3</a></li>
+                </ul>
+              </li>
+          </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
-    <div class="container">
+    <div class="container-fluid">
         {% block content %}{% endblock %}
-      <footer>
-          <hr>
-          <p>&copy; m0r3n0</p>
-      </footer>
     </div>
-<!--
-    <footer class="footer">
-      <div class="container">
-        <p class="text-muted">Place sticky footer content here.</p>
-      </div>
+
+    <footer>
+        <div class="container-fluid">
+            <button type="submit" class="btn btn-default" value="Back" onclick="history.back()">{{ _('Back') }}</button>
+            <hr>
+            <p> &copy; m0r3n0</p>
+        </div>
     </footer>
--->
 
 
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        {% for msg in messages %}
-        <div class="alert alert-danger" role="alert">{{ msg }}</div>
-        {% endfor %}
-        {% endif %}
-    {% endwith %}
+
 </body>
 </html>
